@@ -7,6 +7,28 @@
 }
 
 body,html {
+    padding: 5px;
     background-color: antiquewhite;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+hr {
+    margin: .4rem 0;
+}
+
+.title,
+.instructions {
+    margin: .4rem 0;
+}
+.btn {
+    display: inline-block;
+    padding: .4rem;
+    border: 3px solid black;
+    border-radius: 4px;
+
+    background-color: #0902c7;
+
+    color: white;
+
+    text-decoration: none;
 }
