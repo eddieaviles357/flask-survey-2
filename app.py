@@ -13,4 +13,4 @@ responses = []
 @app.route('/')
 def home():
     """ Returns a questionaire to the user """
-    return render_template('index.html', title=surveys["satisfaction"])
+    return render_template('index.html', title=surveys["satisfaction"].title)
