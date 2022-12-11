@@ -3,7 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "SecretPhrase"
-DebugToolbarExtension(app)
+debug = DebugToolbarExtension(app)
 
 
 @app.route('/')
