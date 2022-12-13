@@ -43,8 +43,11 @@ def home():
 def questions(idx):
     """ Returns questions """
     global current_idx
-    idx = current_idx
+    # check if user is trying to skip a question
+    if idx != current_idx:
+        flash("Cant't access invalid question", 'error')
 
+    idx = current_idx
     if idx >= LENGTH:  # render completed page route when end of index hits
         return redirect('/thankyou')
 
@@ -74,6 +77,7 @@ def answer():
                                url=f'/questions/{current_idx}')
 
     if request.method == 'GET' and current_idx < LENGTH:
+        flash("Please finish survey", 'error')
         return redirect(f'/questions/{current_idx + 1}')
 
 
