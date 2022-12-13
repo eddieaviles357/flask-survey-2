@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %} Questionaire {% endblock %}
+
+{% block content %} 
+    <h3>{{ data['question'] }}</h3>
+    <form action='/answer' method="POST">
+        {% for choice in data['choices'] %}
+        <label for={{choice}}>{{ choice }}</label>
+        <input required type="radio" name="answer" id={{choice}} value={{choice}}>
+        {% endfor %}
+        <button class="btn btn-form">Next Question</button>
+    </form>
+{% endblock %}
+{% block footer %}
+<div>{{ curr_page }} / {{ out_of }}</div>
+<script>
+    let choiceElements = document.querySelectorAll('label')
+    let inputs = document.querySelectorAll('input')
+    choiceElements.forEach((ele,idx) => {
+        let attrFor = attrID = attrVal = ele.innerHTML.split(' ').join('-')
+        ele.setAttribute('for', attrFor)
+        inputs[idx].setAttribute('id', attrID)
+        inputs[idx].setAttribute('value', attrVal.split('-').join(' '))
+    })
+
+</script>
+{% endblock %}
