@@ -7,9 +7,13 @@
 }
 
 body,html {
-    padding: 5px;
+    padding: 0 5px;
     background-color: antiquewhite;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 hr {
@@ -23,6 +27,7 @@ hr {
 .btn {
     display: inline-block;
     padding: .4rem;
+    margin: 10px 0;
     border: 3px solid black;
     border-radius: 4px;
 
@@ -31,4 +36,31 @@ hr {
     color: white;
 
     text-decoration: none;
+}
+
+.btn-form {
+    padding: .4rem .6rem;
+    margin: .4rem auto;
+    display: block;
+
+    font-size: inherit;
+}
+
+.success {
+    display: block;
+    background-color: rgb(94, 209, 94);
+    color: white;
+    padding: 10px;
+}
+
+.messages {
+    min-width: 100vw;
+    min-height: 50px;
+    overflow: visible;
+    text-align: center;
+}
+
+form label {
+    font-size: 20px;
+    padding: 10px 0;
 }
