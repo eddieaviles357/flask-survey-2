@@ -45,12 +45,18 @@ hr {
 
     font-size: inherit;
 }
-
-.success {
+.success,
+.error {
     display: block;
-    background-color: rgb(94, 209, 94);
     color: white;
     padding: 10px;
+}
+.success {
+    background-color: rgb(94, 209, 94);
+}
+
+.error {
+    background-color: rgb(209, 94, 94);
 }
 
 .messages {
