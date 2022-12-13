@@ -5,7 +5,7 @@ class Question:
         """Create question (assume Yes/No for choices."""
 
         if not choices:
-            choices = ["Yes", "No"]
+            choices = ["yes", "no"]
 
         self.question = question
         self.choices = choices
@@ -25,8 +25,7 @@ class Survey:
 
 satisfaction_survey = Survey(
     "Customer Satisfaction Survey",
-    "Please fill out a survey about your experience with us.",
-    [
+    "Please fill out a survey about your experience with us.", [
         Question("Have you shopped here before?"),
         Question("Did someone else shop with you today?"),
         Question("On average, how much do you spend a month on frisbees?",
@@ -36,8 +35,7 @@ satisfaction_survey = Survey(
 
 personality_quiz = Survey(
     "Rithm Personality Test",
-    "Learn more about yourself with our personality quiz!",
-    [
+    "Learn more about yourself with our personality quiz!", [
         Question("Do you ever dream about code?"),
         Question("Do you ever have nightmares about code?"),
         Question("Do you prefer porcupines or hedgehogs?",
@@ -45,8 +43,7 @@ personality_quiz = Survey(
         Question("Which is the worst function name, and why?",
                  ["do_stuff()", "run_me()", "wtf()"],
                  allow_text=True),
-    ]
-)
+    ])
 
 surveys = {
     "satisfaction": satisfaction_survey,
