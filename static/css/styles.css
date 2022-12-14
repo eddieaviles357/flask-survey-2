@@ -70,3 +70,8 @@ form label {
     font-size: 20px;
     padding: 10px 0;
 }
+
+.disable {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
