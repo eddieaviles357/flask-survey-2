@@ -6,9 +6,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "SecretPhrase"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
-# will hold the clients answers
-user_responses = []
-satisfaction_survey = surveys["satisfaction"]
+
+user_responses = []  # will hold the clients answers
+satisfaction_survey = surveys["satisfaction"]  # get satisfaction survey
 
 # list of dicts consisting of questions and choices [list]
 SATISFACTION_DICT_QUESTIONS_CHOICES = [{
@@ -17,15 +17,14 @@ SATISFACTION_DICT_QUESTIONS_CHOICES = [{
 } for satisfaction_question in satisfaction_survey.questions]
 
 LENGTH = len(SATISFACTION_DICT_QUESTIONS_CHOICES)
-# what index are we currently in
-current_idx = 0
+
+current_idx = 0  # what index are we currently in
 
 
 # home route
 @app.route('/')
 def home():
     """ Returns a title and instructions to the user """
-    global current_idx
     if current_idx >= LENGTH:  # render completed page route when end of index hits
         return redirect('/thankyou')
     # user_responses.clear()  # clear out the list fresh start
@@ -42,16 +41,16 @@ def home():
 @app.route('/questions/<int:idx>')
 def questions(idx):
     """ Returns questions """
-    global current_idx
-    # check if user is trying to skip a question
-    if idx != current_idx:
-        flash("Cant't access invalid question", 'error')
+    global current_idx  # used to modify global variable
+
+    if idx != current_idx:  # check if user is trying to skip a question
+        flash("Cant't access invalid question", 'error')  # send error to user
 
     idx = current_idx
     if idx >= LENGTH:  # render completed page route when end of index hits
         return redirect('/thankyou')
 
-    next_idx = current_idx + 1
+    next_idx = current_idx + 1  # send over the next index
 
     return render_template('questionaire.html',
                            data=SATISFACTION_DICT_QUESTIONS_CHOICES[idx],
@@ -62,13 +61,13 @@ def questions(idx):
 @app.route('/answer', methods=['GET', 'POST'])
 def answer():
     """ Render the users answer """
-    global current_idx
+    global current_idx  # used to modify global variable
 
-    if current_idx >= LENGTH:
+    if current_idx >= LENGTH:  # did the user finish all questions
         return redirect('/thankyou')
 
-    if request.method == 'POST':
-        current_idx += 1
+    if request.method == 'POST':  # user successfully answered question
+        current_idx += 1  # increase index and send next question to user
         answer = request.form.get('answer')
         user_responses.append(answer)
 
@@ -77,15 +76,17 @@ def answer():
                                url=f'/questions/{current_idx}')
 
     if request.method == 'GET' and current_idx < LENGTH:
-        flash("Please finish survey", 'error')
+        flash("Please finish survey",
+              'error')  # send error flash message to user
         return redirect(f'/questions/{current_idx + 1}')
 
 
 @app.route('/thankyou')
 def complete():
-    print('finihsed route', current_idx, 'LENGTH', LENGTH)
-    if current_idx < LENGTH:
+    print('finihsed route', current_idx, 'LENGTH', LENGTH)  # debugging
+    if current_idx < LENGTH:  # did the user not finish question send back to question
         return redirect(f'/questions/{current_idx}')
-    print('\n', user_responses, '\n')
-    flash("Finished!", 'success')
+    print('\n', user_responses, '\n')  # debugging
+    flash("Finished!",
+          'success')  # send a flash success message to user also for styles
     return render_template('finished.html')
