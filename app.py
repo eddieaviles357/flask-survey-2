@@ -7,7 +7,6 @@ app.config['SECRET_KEY'] = "SecretPhrase"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
-user_responses = []  # will hold the clients answers
 satisfaction_survey = surveys["satisfaction"]  # get satisfaction survey
 
 # list of dicts consisting of questions and choices [list]
@@ -21,13 +20,24 @@ LENGTH = len(SATISFACTION_DICT_QUESTIONS_CHOICES)
 current_idx = 0  # what index are we currently in
 
 
+@app.before_request
+def print_cookies():
+    print('****************')
+    print('COOKIES', session.get('user_resp_cookie'))
+    print('****************')
+
+
 # home route
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     """ Returns a title and instructions to the user """
+    if request.method == 'POST':  # set cookies and reset user responses
+        session.clear()
+        session['user_resp_cookie'] = []
+        return redirect('/questions/0')
+
     if current_idx >= LENGTH:  # render completed page route when end of index hits
         return redirect('/thankyou')
-    # user_responses.clear()  # clear out the list fresh start
     # current_idx = 0  # reset to 0
 
     title = satisfaction_survey.title
@@ -38,7 +48,7 @@ def home():
                            instructions=instructions)
 
 
-@app.route('/questions/<int:idx>')
+@app.route('/questions/<int:idx>', methods=['GET', 'POST'])
 def questions(idx):
     """ Returns questions """
     global current_idx  # used to modify global variable
@@ -68,8 +78,14 @@ def answer():
 
     if request.method == 'POST':  # user successfully answered question
         current_idx += 1  # increase index and send next question to user
-        answer = request.form.get('answer')
-        user_responses.append(answer)
+        answer = request.form.get('answer', 'none')
+
+        # extract users answers from browser cookie
+        response_from_user = session.get('user_resp_cookie', [])
+        # append to extracted browser cookie list
+        response_from_user.append(answer)
+        # rebind browser cookie
+        session['user_resp_cookie'] = response_from_user
 
         return render_template('answer.html',
                                response=answer,
@@ -83,10 +99,8 @@ def answer():
 
 @app.route('/thankyou')
 def complete():
-    print('finihsed route', current_idx, 'LENGTH', LENGTH)  # debugging
     if current_idx < LENGTH:  # did the user not finish question send back to question
         return redirect(f'/questions/{current_idx}')
-    print('\n', user_responses, '\n')  # debugging
-    flash("Finished!",
-          'success')  # send a flash success message to user also for styles
+    # send a flash success message to user and use success as a class for styling
+    flash("Finished!", 'success')
     return render_template('finished.html')
